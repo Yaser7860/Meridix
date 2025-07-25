@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meridix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="./meridix no text.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#9C27B0',
+                            DEFAULT: '#7B1FA2',
+                            dark: '#4A148C',
+                        },
+                        secondary: {
+                            light: '#424242',
+                            DEFAULT: '#212121',
+                            dark: '#121212',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Montserrat', 'sans-serif'],
+                        'serif': ['Playfair Display', 'serif'],
+                    },
+                }
+            }
+        }
+       
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .animate-background {
+            background: linear-gradient(45deg, #121212, #4A148C, #7B1FA2, #212121);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        .dark .animate-background {
+            background: linear-gradient(45deg, #000000, #2D1152, #4A148C, #0A0A0A);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .service-card {
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-100 dark:bg-secondary-dark text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <!-- Moving Background Overlay -->
+    <div class="fixed inset-0 animate-background opacity-10 z-0"></div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white dark:bg-secondary-dark bg-opacity-90 dark:bg-opacity-90 backdrop-blur-md shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-2xl font-serif font-bold text-primary-dark dark:text-primary-light">
+                    <span class="text-secondary-dark dark:text-white">Meri</span>dix
+                </a>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="font-medium hover:text-primary-dark dark:hover:text-primary-light transition-colors">Home</a>
+                    <a href="#about" class="font-medium hover:text-primary-dark dark:hover:text-primary-light transition-colors">About</a>
+                    <a href="#capabilities" class="font-medium hover:text-primary-dark dark:hover:text-primary-light transition-colors">Capabilities</a>
+                    <a href="#services" class="font-medium hover:text-primary-dark dark:hover:text-primary-light transition-colors">Services</a>
+                    <a href="#contact" class="font-medium hover:text-primary-dark dark:hover:text-primary-light transition-colors">Contact</a>
+                    <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-secondary focus:outline-none">
+                        <svg id="sunIcon" class="w-6 h-6 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <svg id="moonIcon" class="w-6 h-6 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <button id="mobileMenuBtn" class="md:hidden focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden hidden pt-4 pb-2 space-y-3">
+                <a href="#home" class="block py-2 hover:text-primary-dark dark:hover:text-primary-light transition-colors">Home</a>
+                <a href="#about" class="block py-2 hover:text-primary-dark dark:hover:text-primary-light transition-colors">About</a>
+                <a href="#capabilities" class="block py-2 hover:text-primary-dark dark:hover:text-primary-light transition-colors">Capabilities</a>
+                <a href="#services" class="block py-2 hover:text-primary-dark dark:hover:text-primary-light transition-colors">Services</a>
+                <a href="#contact" class="block py-2 hover:text-primary-dark dark:hover:text-primary-light transition-colors">Contact</a>
+                <div class="flex items-center py-2">
+                    <span class="mr-3">Theme:</span>
+                    <button id="mobileThemeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-secondary focus:outline-none">
+                        <svg class="w-6 h-6 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <svg class="w-6 h-6 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center py-20 overflow-hidden">
+        <div class="container mx-auto px-4 z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-serif font-bold mb-6">
+                        <span class="text-primary-dark dark:text-primary-light">Creative</span> 
+                        <span class="block">Professional</span>
+                        <span class="block">Excellence</span>
+                    </h1>
+                    <p class="text-lg md:text-xl mb-8 max-w-lg">
+                        Delivering exceptional results with a focus on innovation, quality, and client satisfaction.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact" class="px-8 py-3 bg-primary-dark dark:bg-primary text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                            Get In Touch
+                        </a>
+                        <a href="#services" class="px-8 py-3 border-2 border-primary-dark dark:border-primary text-primary-dark dark:text-primary font-medium rounded-full hover:bg-primary-dark hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all transform hover:-translate-y-1">
+                            View Services
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-64 h-64 md:w-80 md:h-80 floating">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                            <path fill="#7B1FA2" d="M45.7,-77.2C58.9,-69.2,69.2,-55.3,76.1,-40.3C83,-25.3,86.5,-9.1,83.2,5.2C79.9,19.5,69.8,31.9,59.2,42.1C48.6,52.3,37.6,60.3,25.1,65.9C12.7,71.5,-1.1,74.7,-14.9,72.9C-28.7,71.1,-42.5,64.3,-53.5,54.2C-64.5,44.1,-72.7,30.7,-76.9,15.7C-81.1,0.7,-81.3,-15.9,-75.8,-30.1C-70.3,-44.3,-59.1,-56.1,-45.8,-64C-32.5,-71.9,-16.3,-75.9,0.4,-76.5C17.1,-77.1,34.1,-74.3,45.7,-67.2Z" transform="translate(100 100)" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-48 h-48 md:w-60 md:h-60 rounded-full bg-white dark:bg-secondary-dark shadow-xl overflow-hidden">
+                                    <img src="./meridix no text.png" alt="" width="100%" class="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white dark:bg-secondary bg-opacity-90 dark:bg-opacity-90 relative">
+        <div class="container mx-auto px-4 z-10 relative">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">About <span class="text-primary-dark dark:text-primary-light">Us</span></h2>
+                <div class="w-24 h-1 bg-primary-dark dark:bg-primary-light mx-auto"></div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <div class="relative">
+                        <div class="w-full h-80 md:h-96 bg-gray-200 dark:bg-secondary-dark rounded-lg overflow-hidden">
+                            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                                <path fill="#7B1FA2" d="M47.7,-51.2C59.5,-42.9,65.8,-25.9,67.3,-9.2C68.8,7.5,65.5,23.9,56.8,36.2C48.1,48.5,33.9,56.7,18.3,62.8C2.8,68.9,-14.2,72.8,-29.7,68.4C-45.2,64,-59.3,51.3,-67.8,35.4C-76.3,19.5,-79.2,0.4,-74.8,-16.2C-70.4,-32.8,-58.7,-46.9,-44.5,-54.7C-30.3,-62.5,-13.6,-64,-0.9,-62.9C11.8,-61.8,35.9,-59.5,47.7,-51.2Z" transform="translate(100 100)" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center p-6">
+                                    <span class="text-6xl md:text-7xl font-bold text-white">10+</span>
+                                    <p class="text-xl md:text-2xl font-medium text-white mt-2">Years Experience</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-primary-light dark:bg-primary-dark rounded-lg shadow-lg flex items-center justify-center">
+                            <div class="text-center">
+                                <span class="text-3xl font-bold text-white">100+</span>
+                                <p class="text-sm font-medium text-white">Projects</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 md:pl-12">
+                    <h3 class="text-2xl md:text-3xl font-serif font-bold mb-6">Professional Excellence in Every Detail</h3>
+                    <p class="mb-6 text-lg">
+                        With over a decade of experience, we've established ourselves as leaders in delivering exceptional results across various industries. Our commitment to quality and innovation sets us apart.
+                    </p>
+                    <p class="mb-8 text-lg">
+                        We believe in building lasting relationships with our clients through transparent communication, reliability, and consistently exceeding expectations.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary-dark dark:bg-primary flex items-center justify-center mr-4">
+                                <i class="fas fa-check text-white"></i>
+                            </div>
+                            <span class="font-medium">Innovative Solutions</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary-dark dark:bg-primary flex items-center justify-center mr-4">
+                                <i class="fas fa-check text-white"></i>
+                            </div>
+                            <span class="font-medium">Client-Focused</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary-dark dark:bg-primary flex items-center justify-center mr-4">
+                                <i class="fas fa-check text-white"></i>
+                            </div>
+                            <span class="font-medium">Quality Assurance</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary-dark dark:bg-primary flex items-center justify-center mr-4">
+                                <i class="fas fa-check text-white"></i>
+                            </div>
+                            <span class="font-medium">Timely Delivery</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities Section -->
+    <section id="capabilities" class="py-20 bg-gray-100 dark:bg-secondary-dark relative">
+        <div class="container mx-auto px-4 z-10 relative">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Our <span class="text-primary-dark dark:text-primary-light">Capabilities</span></h2>
+                <div class="w-24 h-1 bg-primary-dark dark:bg-primary-light mx-auto"></div>
+                <p class="mt-6 max-w-2xl mx-auto text-lg">
+                    We bring together expertise across multiple disciplines to deliver comprehensive solutions tailored to your needs.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Capability 1 -->
+                <div class="bg-white dark:bg-secondary rounded-lg shadow-lg p-8 transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 rounded-full bg-primary-light dark:bg-primary-dark flex items-center justify-center mb-6">
+                        <i class="fas fa-laptop-code text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Web Development</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Creating responsive, user-friendly websites and web applications using the latest technologies and best practices.
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">HTML/CSS</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">JavaScript</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">React</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Node.js</span>
+                    </div>
+                </div>
+                
+                <!-- Capability 2 -->
+                <div class="bg-white dark:bg-secondary rounded-lg shadow-lg p-8 transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 rounded-full bg-primary-light dark:bg-primary-dark flex items-center justify-center mb-6">
+                        <i class="fas fa-paint-brush text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">UI/UX Design</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Crafting intuitive, visually appealing interfaces that enhance user experience and drive engagement.
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Figma</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Adobe XD</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Sketch</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Prototyping</span>
+                    </div>
+                </div>
+                
+                <!-- Capability 3 -->
+                <div class="bg-white dark:bg-secondary rounded-lg shadow-lg p-8 transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 rounded-full bg-primary-light dark:bg-primary-dark flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Digital Marketing</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Implementing strategic marketing campaigns to increase visibility, drive traffic, and boost conversions.
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">SEO</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">SEM</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Social Media</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Analytics</span>
+                    </div>
+                </div>
+                
+                <!-- Capability 4 -->
+                <div class="bg-white dark:bg-secondary rounded-lg shadow-lg p-8 transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 rounded-full bg-primary-light dark:bg-primary-dark flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Mobile Development</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Building native and cross-platform mobile applications that deliver exceptional user experiences.
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">iOS</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Android</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">React Native</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Flutter</span>
+                    </div>
+                </div>
+                
+                <!-- Capability 5 -->
+                <div class="bg-white dark:bg-secondary rounded-lg shadow-lg p-8 transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 rounded-full bg-primary-light dark:bg-primary-dark flex items-center justify-center mb-6">
+                        <i class="fas fa-server text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Cloud Solutions</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Implementing scalable, secure cloud infrastructure and services to optimize operations and reduce costs.
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">AWS</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Azure</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Google Cloud</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">DevOps</span>
+                    </div>
+                </div>
+                
+                <!-- Capability 6 -->
+                <div class="bg-white dark:bg-secondary rounded-lg shadow-lg p-8 transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 rounded-full bg-primary-light dark:bg-primary-dark flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Cybersecurity</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Protecting digital assets with comprehensive security solutions and best practices implementation.
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Risk Assessment</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Penetration Testing</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Compliance</span>
+                        <span class="px-3 py-1 bg-gray-200 dark:bg-secondary-dark text-xs font-medium rounded-full">Training</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-white dark:bg-secondary bg-opacity-90 dark:bg-opacity-90 relative">
+        <div class="container mx-auto px-4 z-10 relative">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Our <span class="text-primary-dark dark:text-primary-light">Services</span></h2>
+                <div class="w-24 h-1 bg-primary-dark dark:bg-primary-light mx-auto"></div>
+                <p class="mt-6 max-w-2xl mx-auto text-lg">
+                    We offer a comprehensive range of services designed to help your business thrive in the digital landscape.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="service-card bg-gray-100 dark:bg-secondary-dark rounded-xl overflow-hidden shadow-lg">
+                    <div class="h-3 bg-primary-dark dark:bg-primary-light"></div>
+                    <div class="p-8">
+                        <div class="w-16 h-16 rounded-lg bg-primary-dark dark:bg-primary-light flex items-center justify-center mb-6">
+                            <i class="fas fa-code text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Custom Web Development</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            Tailored websites and web applications built to meet your specific business requirements and goals.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Responsive Design</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>E-commerce Solutions</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Content Management</span>
+                            </li>
+                        </ul>
+                        <a href="#contact" class="inline-block px-6 py-2 bg-primary-dark dark:bg-primary-light text-white rounded-full hover:shadow-lg transition-all">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="service-card bg-gray-100 dark:bg-secondary-dark rounded-xl overflow-hidden shadow-lg">
+                    <div class="h-3 bg-primary-dark dark:bg-primary-light"></div>
+                    <div class="p-8">
+                        <div class="w-16 h-16 rounded-lg bg-primary-dark dark:bg-primary-light flex items-center justify-center mb-6">
+                            <i class="fas fa-palette text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Brand Identity & Design</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            Comprehensive branding solutions that communicate your values and resonate with your audience.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Logo Design</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Visual Identity Systems</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Brand Guidelines</span>
+                            </li>
+                        </ul>
+                        <a href="#contact" class="inline-block px-6 py-2 bg-primary-dark dark:bg-primary-light text-white rounded-full hover:shadow-lg transition-all">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="service-card bg-gray-100 dark:bg-secondary-dark rounded-xl overflow-hidden shadow-lg">
+                    <div class="h-3 bg-primary-dark dark:bg-primary-light"></div>
+                    <div class="p-8">
+                        <div class="w-16 h-16 rounded-lg bg-primary-dark dark:bg-primary-light flex items-center justify-center mb-6">
+                            <i class="fas fa-bullhorn text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Digital Marketing</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            Strategic marketing solutions to increase visibility, drive traffic, and generate leads.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>SEO Optimization</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Social Media Marketing</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>PPC Campaigns</span>
+                            </li>
+                        </ul>
+                        <a href="#contact" class="inline-block px-6 py-2 bg-primary-dark dark:bg-primary-light text-white rounded-full hover:shadow-lg transition-all">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 4 -->
+                <div class="service-card bg-gray-100 dark:bg-secondary-dark rounded-xl overflow-hidden shadow-lg">
+                    <div class="h-3 bg-primary-dark dark:bg-primary-light"></div>
+                    <div class="p-8">
+                        <div class="w-16 h-16 rounded-lg bg-primary-dark dark:bg-primary-light flex items-center justify-center mb-6">
+                            <i class="fas fa-mobile-alt text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Mobile App Development</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            Native and cross-platform mobile applications that deliver exceptional user experiences.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>iOS & Android Apps</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Cross-Platform Solutions</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>App Store Optimization</span>
+                            </li>
+                        </ul>
+                        <a href="#contact" class="inline-block px-6 py-2 bg-primary-dark dark:bg-primary-light text-white rounded-full hover:shadow-lg transition-all">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 5 -->
+                <div class="service-card bg-gray-100 dark:bg-secondary-dark rounded-xl overflow-hidden shadow-lg">
+                    <div class="h-3 bg-primary-dark dark:bg-primary-light"></div>
+                    <div class="p-8">
+                        <div class="w-16 h-16 rounded-lg bg-primary-dark dark:bg-primary-light flex items-center justify-center mb-6">
+                            <i class="fas fa-chart-pie text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Data Analytics</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            Transform raw data into actionable insights to drive informed business decisions.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Business Intelligence</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Data Visualization</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Predictive Analytics</span>
+                            </li>
+                        </ul>
+                        <a href="#contact" class="inline-block px-6 py-2 bg-primary-dark dark:bg-primary-light text-white rounded-full hover:shadow-lg transition-all">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 6 -->
+                <div class="service-card bg-gray-100 dark:bg-secondary-dark rounded-xl overflow-hidden shadow-lg">
+                    <div class="h-3 bg-primary-dark dark:bg-primary-light"></div>
+                    <div class="p-8">
+                        <div class="w-16 h-16 rounded-lg bg-primary-dark dark:bg-primary-light flex items-center justify-center mb-6">
+                            <i class="fas fa-headset text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">IT Consulting</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            Expert guidance to optimize your technology infrastructure and digital strategy.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Technology Assessment</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>Digital Transformation</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-primary-dark dark:text-primary-light mr-2"></i>
+                                <span>IT Strategy Development</span>
+                            </li>
+                        </ul>
+                        <a href="#contact" class="inline-block px-6 py-2 bg-primary-dark dark:bg-primary-light text-white rounded-full hover:shadow-lg transition-all">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-100 dark:bg-secondary-dark relative">
+        <div class="container mx-auto px-4 z-10 relative">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Contact <span class="text-primary-dark dark:text-primary-light">Us</span></h2>
+                <div class="w-24 h-1 bg-primary-dark dark:bg-primary-light mx-auto"></div>
+                <p class="mt-6 max-w-2xl mx-auto text-lg">
+                    Ready to start your project? Get in touch with us today and let's discuss how we can help you achieve your goals.
+                </p>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <div class="bg-white dark:bg-secondary rounded-lg shadow-lg p-8">
+                        <h3 class="text-2xl font-bold mb-6">Send Us a Message</h3>
+                        <form id="contactForm" class="space-y-6" method="POST">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="name" class="block mb-2 font-medium">Name</label>
+                                    <input type="text" id="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark dark:focus:ring-primary-light" placeholder="Your Name">
+                                </div>
+                                <div>
+                                    <label for="email" class="block mb-2 font-medium">Email</label>
+                                    <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark dark:focus:ring-primary-light" placeholder="Your Email">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="subject" class="block mb-2 font-medium">Subject</label>
+                                <input type="text" id="subject" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark dark:focus:ring-primary-light" placeholder="Subject">
+                            </div>
+                            <div>
+                                <label for="message" class="block mb-2 font-medium">Message</label>
+                                <textarea id="message" rows="5" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark dark:focus:ring-primary-light" placeholder="Your Message"></textarea>
+                            </div>
+                            <button type="submit" class="w-full px-6 py-3 bg-primary-dark dark:bg-primary text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                                Send Message
+                            </button>
+                            <p class="text-center text-sm text-gray-500 dark:text-gray-400">This would send your message to our team.</p>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-white dark:bg-secondary rounded-lg shadow-lg p-8 mb-8">
+                        <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 rounded-full bg-primary-dark dark:bg-primary-light flex items-center justify-center mr-4 shrink-0">
+                                    <i class="fas fa-map-marker-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Address</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">Badmorqan street, Ibn-sina (81)<br>Herat, Afghanistan</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 rounded-full bg-primary-dark dark:bg-primary-light flex items-center justify-center mr-4 shrink-0">
+                                    <i class="fas fa-phone-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Phone</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">+93 790 781 909</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 rounded-full bg-primary-dark dark:bg-primary-light flex items-center justify-center mr-4 shrink-0">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Email</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">meridix.co@gmail.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 rounded-full bg-primary-dark dark:bg-primary-light flex items-center justify-center mr-4 shrink-0">
+                                    <i class="fas fa-clock text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Business Hours</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">Monday - Friday: 9:00 AM - 5:00 PM<br>Saturday & Sunday: Closed</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-bold mb-4">Connect With Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://t.me/YaserBarahooie786" class="w-10 h-10 rounded-full bg-primary-dark dark:bg-primary-light flex items-center justify-center text-white hover:bg-primary transition-colors">
+                                    <i class="fab fa-telegram"></i>
+                                </a>
+                                <a href="https://github.com/Yaser7860" class="w-10 h-10 rounded-full bg-primary-dark dark:bg-primary-light flex items-center justify-center text-white hover:bg-primary transition-colors">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/meridix-stu-59727226b/" class="w-10 h-10 rounded-full bg-primary-dark dark:bg-primary-light flex items-center justify-center text-white hover:bg-primary transition-colors">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="https://www.instagram.com/meridix.stu/" class="w-10 h-10 rounded-full bg-primary-dark dark:bg-primary-light flex items-center justify-center text-white hover:bg-primary transition-colors">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-secondary-dark dark:bg-black text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-serif font-bold mb-6">
+                        <span class="text-white">Meri</span><span class="text-primary-light">dix</span>
+                    </h3>
+                    <p class="mb-6 text-gray-300">
+                        Delivering exceptional results with a focus on innovation, quality, and client satisfaction.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://t.me/YaserBarahooie786" class="text-gray-300 hover:text-primary-light transition-colors">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://github.com/Yaser7860" class="text-gray-300 hover:text-primary-light transition-colors">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/meridix-stu-59727226b/" class="text-gray-300 hover:text-primary-light transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.instagram.com/meridix.stu/" class="text-gray-300 hover:text-primary-light transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-gray-300 hover:text-primary-light transition-colors">Home</a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-primary-light transition-colors">About Us</a></li>
+                        <li><a href="#capabilities" class="text-gray-300 hover:text-primary-light transition-colors">Capabilities</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-primary-light transition-colors">Services</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-primary-light transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#services" class="text-gray-300 hover:text-primary-light transition-colors">Web Development</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-primary-light transition-colors">Brand Identity</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-primary-light transition-colors">Digital Marketing</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-primary-light transition-colors">Mobile App Development</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-primary-light transition-colors">IT Consulting</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Contact</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary-light"></i>
+                            <span class="text-gray-300">Badmorqan street, Ibn-sina (81)<br>Herat, Afghanistan</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-3 text-primary-light"></i>
+                            <span class="text-gray-300">+93 790 781 909</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-primary-light"></i>
+                            <span class="text-gray-300">meridix.co@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    &copy; 2025 Meridix. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 text-sm hover:text-primary-light transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 text-sm hover:text-primary-light transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 text-sm hover:text-primary-light transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-primary-dark dark:bg-primary-light text-white flex items-center justify-center shadow-lg hover:bg-primary transition-colors z-50 opacity-0 invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference or use device preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        }
+        
+        function toggleTheme() {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        }
+        
+        themeToggle.addEventListener('click', toggleTheme);
+        mobileThemeToggle.addEventListener('click', toggleTheme);
+        
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+                backToTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopBtn.classList.remove('opacity-100', 'visible');
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Form Message
+
+        document.getElementById("contactForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        let name = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+        let subject = document.getElementById("subject").value;
+        let message = document.getElementById("message").value;
+
+        let token = "8412728970:AAGX3d-EuR-cnOVobu27f1Wu72FuntZCg7s";
+        let chat_id = "5571744461";
+        let text = `📬 New Contact Form Submission:\n\n👤 Name: ${name}\n📧 Email: ${email}\n📝 Subject: ${subject}\n💬 Message:\n${message}`;
+
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+            chat_id: chat_id,
+            text: text
+            })
+        }).then(response => {
+            if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Message Sent!',
+                text: 'Thank you for contacting us. We will get back to you shortly.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK',
+                showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+                }
+            });
+            document.getElementById("contactForm").reset();
+            } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong. Please try again later.'
+            });
+            }
+        });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96487ca597642927',t:'MTc1MzQxMzI2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
